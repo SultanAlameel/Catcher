@@ -11,45 +11,25 @@ import org.zaproxy.clientapi.core.ClientApiException;
 import com.ksu.catcher.ApplicationProperties;
 import com.ksu.catcher.factory.Tool;
 
+import javax.annotation.PostConstruct;
+
 
 @Component
 public class ZapClient implements Tool{
-
 	private final ApplicationProperties applicationProperties;
-	
-	
-	final String ZAP_ADDRESS = getApplicationProperties().getZap().getAddress();
-	final int ZAP_PORT = getApplicationProperties().getZap().getPort();
-	final String ZAP_API_KEY = getApplicationProperties().getZap().getApiKey();
+	private ClientApi api ;
 
-	ClientApi api = new ClientApi(ZAP_ADDRESS, ZAP_PORT, ZAP_API_KEY);
-	
-
-	
 	public ZapClient(ApplicationProperties applicationProperties) {
-		
 		this.applicationProperties = applicationProperties;
 	}
 
-
-	public String getZAP_ADDRESS() {
-		return ZAP_ADDRESS;
+	@PostConstruct
+	private void postConstruct(){
+		ApplicationProperties.Zap zapConfig = this.applicationProperties.getZap() ;
+		api = new ClientApi(zapConfig.getAddress(), zapConfig.getPort(), zapConfig.getApiKey());
 	}
-
-
-	public int getZAP_PORT() {
-		return ZAP_PORT;
-	}
-
-
-	public String getZAP_API_KEY() {
-		return ZAP_API_KEY;
-	}
-
 
 	public String startCrawling(String domain) {
-		
-
 		try {
 			ApiResponse resp = api.spider.scan(domain, null, null, null, null);
 			String scanID = ((ApiResponseElement) resp).getValue();
@@ -61,22 +41,16 @@ public class ZapClient implements Tool{
 		}
 		return null;
 	}
-	
-	
-	public int checkCrawler(String scanId) throws InterruptedException, NumberFormatException, ClientApiException {
-		
 
-			    int progress;
-			
-	            progress = Integer.parseInt(((ApiResponseElement) api.spider.status(scanId)).getValue());
-	            System.out.println("preparing your website : " + progress + "%");
-	            
-	            return progress;      
+	public int checkCrawler(String scanId) throws ClientApiException {
+		int progress;
+		progress = Integer.parseInt(((ApiResponseElement) api.spider.status(scanId)).getValue());
+		System.out.println("preparing your website : " + progress + "%");
+
+		return progress;
 	}
-	
-	
-	public String startScan(String domain) {
 
+	public String startScan(String domain) {
         try {
            
             ApiResponse resp = api.ascan.scan(domain, "True", "False", null, null, null);
@@ -91,27 +65,15 @@ public class ZapClient implements Tool{
             
             return null;
                    }
-			}
-	
-	
-	
-	public int checkScan(String scanId) throws InterruptedException, NumberFormatException, ClientApiException {
+	}
+
+	public int checkScan(String scanId) throws  ClientApiException {
 		
 		int progress;
 		
-            progress =Integer.parseInt(((ApiResponseElement) api.ascan.status(scanId)).getValue());
+		progress =Integer.parseInt(((ApiResponseElement) api.ascan.status(scanId)).getValue());
            
-            return progress;
+		return progress;
    
 	}
-
-	public ApplicationProperties getApplicationProperties() {
-		return applicationProperties;
-	}
-	
-	
-	
-	
-	
-	
 }

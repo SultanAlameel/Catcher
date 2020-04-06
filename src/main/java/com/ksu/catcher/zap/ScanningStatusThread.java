@@ -1,79 +1,40 @@
 package com.ksu.catcher.zap;
 
+import com.ksu.catcher.service.DomainService;
 import org.zaproxy.clientapi.core.ApiResponseElement;
 import org.zaproxy.clientapi.core.ClientApi;
 import org.zaproxy.clientapi.core.ClientApiException;
 
 public class ScanningStatusThread implements Runnable  {
-	
 	private String scanID;
 	private ZapClient zapClient;
+	private DomainService domainService ;
 	
-	String ZAP_ADDRESS = zapClient.getApplicationProperties().getZap().getAddress();
-	int ZAP_PORT = zapClient.getApplicationProperties().getZap().getPort();
-	String ZAP_API_KEY = zapClient.getApplicationProperties().getZap().getApiKey();
-	
-	 ClientApi api = new ClientApi(ZAP_ADDRESS,ZAP_PORT ,ZAP_API_KEY);
-	
-	
-	public ScanningStatusThread(String scanID, ZapClient zapClient) {
-		super();
+	public ScanningStatusThread(String scanID, ZapClient zapClient, DomainService domainService) {
 		this.scanID = scanID;
 		this.zapClient = zapClient;
+		this.domainService = domainService ;
 	}
 
-	
 	@Override
 	public void run() {
-		
-		int progress;
+		int progress = 0;
 
 		try {
-		while (true) {
-            
-				Thread.sleep(30000);
-				 progress = Integer.parseInt(((ApiResponseElement) api.ascan.status(scanID)).getValue());
-				 System.out.println("Active Scan progress : " + progress + "%");
-		            
-		            if (progress >= 100) {
-		                break;
-		            }
+			while(progress < 100){
+				Thread.sleep(1000000);
+				progress = zapClient.checkScan(scanID);
 			}
-		}
-		catch (InterruptedException | NumberFormatException | ClientApiException e) {
+		}catch (ClientApiException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+		} catch (InterruptedException ie){
+			//todo handle exception
 		}
 
-
-
-/*
-	public String getScanID() {
-		return scanID;
+		if(progress == 100){
+			domainService.completeScan(scanID);
+		}
 	}
-
-
-
-
-	public void setScanID(String scanID) {
-		this.scanID = scanID;
-	}
-
-
-
-
-	public ZapClient getZapClient() {
-		return zapClient;
-	}
-
-
-
-
-	public void setZapClient(ZapClient zapClient) {
-		this.zapClient = zapClient;
-	}
-	*/		
-		
-	}
+}
 

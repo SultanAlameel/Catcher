@@ -43,47 +43,8 @@ public class ReportResource  {
 		
 		this.domainRepository = domainRepository;
 		this.reportRepository= reportRepository;
-		
-		
 	}
-	
-	
-//@PathVariable (name = "id") Long domainId)
-	
-	@PostMapping("/{domainName}")
-	public void addReport(@PathVariable String domainName) {
-		
-		
-		long domainId = 0 ;
-		
-		
-		for(long i = 0; i<30;i++) {
-			
-		if (domainRepository.findById(i).get().getName().equalsIgnoreCase(domainName)) {
-			
-			domainId = domainRepository.findById(i).get().getId();
-		}
-		
-		}
-		
-		Report report = new Report();
-		
-		Date d1 = new Date();
-		
-		report.setDate(d1);
-		
-		// if i want to use the teprtVO >report.setDomain(domainRepository.findById(reportVO.getDominId()).get());
-		
-		report.setDomain(domainRepository.findById(domainId).get());
-		
-		
-		report.setTarget(report.getDomain().getName());
-		
-		report.setExecuting(false);
-	              
-	    report = reportRepository.save(report);
-	                       
-	}
+
 	
 	@PostMapping("/{reportId}")
 	public Report getReport(@PathVariable long reportId) {
@@ -92,11 +53,7 @@ public class ReportResource  {
 		
 	}
 	
-	
-	
-	
-	
-	}
+}
 
 
 

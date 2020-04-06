@@ -34,39 +34,27 @@ public class DomainResource {
 	}
 	
 	@PostMapping
-	public void createDomain(@RequestBody DomainVO domainVO) {
-		
-		
+	public void addDomain(@RequestBody DomainVO domainVO) {
 		Domain domain = new Domain();
-		
-				
-		
-		
-		domain.setName(domainVO.getDomainName());
-		
-		domain.setUser(userRepository.findById(domainVO.getUserId()).get());
-		
-		
-		domain = domainRepository.save(domain);
-		
-		
 
-		
+		domain.setName(domainVO.getDomainName());
+		domain.setUser(userRepository.findById(domainVO.getUserId()).get());
+
+		domain = domainRepository.save(domain);
 	}
-	
-	
-	
+
+	@PostMapping("/scan")
+	public void scanDomain(@RequestBody DomainVO domainVO){
+
+	}
+
 	@GetMapping("/{id}")
 	public Domain getDomain(@PathVariable Long id) {
 		return domainRepository.findById(id).get();
-		
 	}
-	
-	
-	
+
 	@GetMapping
 	public List<Domain> getAll(){
-		
 		return null ;
 	}
 }

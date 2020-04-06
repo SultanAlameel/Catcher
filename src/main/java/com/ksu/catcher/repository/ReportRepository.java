@@ -9,4 +9,7 @@ import com.ksu.catcher.domain.Report;
 @Repository
 public interface ReportRepository extends CrudRepository<Report,Long> {
 
+    Report findByCrawlId(String crawlingId);
+
+    Report findByScanId(String scanId);
 }

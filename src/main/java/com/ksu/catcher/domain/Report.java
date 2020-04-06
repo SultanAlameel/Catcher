@@ -1,6 +1,7 @@
  
 package com.ksu.catcher.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,11 +19,11 @@ public class Report {
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 private long id;
-private Date date;
+private LocalDate date;
 private String crawlId;
 private String scanId;
 private String target;
-private boolean executing;
+private Boolean executing;
 @ManyToOne
 private Domain domain;
 
@@ -49,11 +50,11 @@ public void setDomain(Domain domain) {
 
 
 
-public boolean isExecuting() {
+public Boolean isExecuting() {
 	return executing;
 }
 
-public void setExecuting(boolean executing) {
+public void setExecuting(Boolean executing) {
 	this.executing = executing;
 }
 
@@ -78,10 +79,10 @@ public long getId() {
 	return id;
 }
 
-public Date getDate() {
+public LocalDate getDate() {
 	return date;
 }
-public void setDate(Date date) {
+public void setDate(LocalDate date) {
 	this.date = date;
 }
 
