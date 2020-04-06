@@ -1,31 +1,23 @@
 package com.ksu.catcher.web.rest.vo;
 
-import java.util.Date;
 
 public class ReportVO {
 	
 	
 	
 	
-	private Date date;
-	private String url;
+
+	private Long dominId;
 	
 	
 	
 	
-	public String getUrl() {
-		return url;
+	public Long getDominId() {
+		return dominId;
 	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setDominId(Long dominId) {
+		this.dominId = dominId;
 	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
-	
+
 
 }

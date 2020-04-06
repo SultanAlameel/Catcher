@@ -1,8 +1,7 @@
 package com.ksu.catcher.web.rest;
 
 import java.util.List;
-
-
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ksu.catcher.ApplicationProperties;
 import com.ksu.catcher.domain.Domain;
-
+import com.ksu.catcher.domain.User;
 import com.ksu.catcher.repository.DomainRepository;
 import com.ksu.catcher.repository.UserRepository;
 import com.ksu.catcher.web.rest.vo.DomainVO;
@@ -26,10 +25,10 @@ public class DomainResource {
 	
 	private final UserRepository userRepository ;
 	
-	private final ApplicationProperties applicationProperties;
+	
 	
 	public DomainResource(DomainRepository domainRepository, UserRepository userRepository, ApplicationProperties applicationProperties) {
-		this.applicationProperties = applicationProperties ;
+		
 		this.userRepository = userRepository;
 		this.domainRepository = domainRepository ;
 	}
@@ -37,30 +36,25 @@ public class DomainResource {
 	@PostMapping
 	public void createDomain(@RequestBody DomainVO domainVO) {
 		
-		//User user = userRepository.findById(id)
 		
 		Domain domain = new Domain();
 		
+				
 		
-	//	user = userRepository.findAll();
 		
 		domain.setName(domainVO.getDomainName());
+		
+		domain.setUser(userRepository.findById(domainVO.getUserId()).get());
 		
 		
 		domain = domainRepository.save(domain);
 		
-		System.out.println(applicationProperties.getZap().getAddress());
-		//
+		
+
 		
 	}
 	
-	@GetMapping("/param")
-	public String getProperty() {
-		System.out.println(applicationProperties);
-		System.out.println(applicationProperties.getZap());
-		System.out.println(applicationProperties.getZap().getAddress());
-		return "Done";
-	}
+	
 	
 	@GetMapping("/{id}")
 	public Domain getDomain(@PathVariable Long id) {
@@ -68,12 +62,6 @@ public class DomainResource {
 		
 	}
 	
-	
-	//@GetMapping("/{id}")
-//	public User getUser(@PathVariable Long id) {
-	//	return domainRepository.findById(id).get();
-		
-	//}
 	
 	
 	@GetMapping

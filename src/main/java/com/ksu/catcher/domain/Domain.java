@@ -19,11 +19,12 @@ public class Domain {
 @GeneratedValue(strategy=GenerationType.AUTO)
 private long id;
 private String name;
-private boolean scanning;
 @ManyToOne
 private User user;
 @OneToMany(mappedBy = "domain")
 private List<Report> reports ;
+
+
 
 
 public User getUser() {

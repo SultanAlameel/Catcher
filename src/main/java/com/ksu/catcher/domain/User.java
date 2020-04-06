@@ -3,6 +3,7 @@ package com.ksu.catcher.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,8 +24,8 @@ private String lastName;
 @Email
 private String email;
 private String password;
-@OneToMany(mappedBy = "user")
-private List<Domain> domains ;
+//@OneToMany(mappedBy = "user",fetch = FetchType.LAZY )
+//private List<Domain> domains ;
 
 
 
@@ -57,13 +58,6 @@ public void setPassword(String password) {
 	this.password = password;
 }
 
-public List<Domain> getDomains() {
-	return domains;
-}
-
-public void setDomains(List<Domain> domains) {
-	this.domains = domains;
-}
 
 
 	

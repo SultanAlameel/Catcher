@@ -19,8 +19,44 @@ public class Report {
 @GeneratedValue(strategy=GenerationType.AUTO)
 private long id;
 private Date date;
+private String crawlId;
 private String scanId;
 private String target;
+private boolean executing;
+@ManyToOne
+private Domain domain;
+
+
+
+
+
+public String getCrawlId() {
+	return crawlId;
+}
+
+public void setCrawlId(String crawlId) {
+	this.crawlId = crawlId;
+}
+
+public Domain getDomain() {
+	return domain;
+}
+
+public void setDomain(Domain domain) {
+	this.domain = domain;
+}
+
+
+
+
+public boolean isExecuting() {
+	return executing;
+}
+
+public void setExecuting(boolean executing) {
+	this.executing = executing;
+}
+
 public String getTarget() {
 	return target;
 }
@@ -28,18 +64,7 @@ public String getTarget() {
 public void setTarget(String target) {
 	this.target = target;
 }
-private boolean executed;
-@ManyToOne
-private Domain domain;
 
-
-public boolean isExecuted() {
-	return executed;
-}
-
-public void setExecuted(boolean executed) {
-	this.executed = executed;
-}
 
 public String getScanId() {
 	return scanId;

@@ -28,7 +28,7 @@ public Long createUser(@RequestBody UserVO userVO) {
 	User user = new User();
 	
 	user.setFirstName(userVO.getFirstName());
-	//user.setLastName(userVO.getLastName());
+	user.setLastName(userVO.getLastName());
 	user.setEmail(userVO.getEmail());
     user.setPassword(userVO.getPassword());
     
