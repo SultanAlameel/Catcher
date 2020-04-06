@@ -1,8 +1,8 @@
 package com.ksu.catcher.web.rest;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.ksu.catcher.service.DomainService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ksu.catcher.ApplicationProperties;
 import com.ksu.catcher.domain.Domain;
-import com.ksu.catcher.domain.User;
 import com.ksu.catcher.repository.DomainRepository;
 import com.ksu.catcher.repository.UserRepository;
 import com.ksu.catcher.web.rest.vo.DomainVO;
@@ -24,13 +23,16 @@ public class DomainResource {
 	private final DomainRepository domainRepository ;
 	
 	private final UserRepository userRepository ;
-	
-	
-	
-	public DomainResource(DomainRepository domainRepository, UserRepository userRepository, ApplicationProperties applicationProperties) {
+
+	private final DomainService domainService ;
+
+	public DomainResource(DomainRepository domainRepository,
+						  UserRepository userRepository,
+						  DomainService domainService) {
 		
 		this.userRepository = userRepository;
 		this.domainRepository = domainRepository ;
+		this.domainService = domainService;
 	}
 	
 	@PostMapping
@@ -45,7 +47,7 @@ public class DomainResource {
 
 	@PostMapping("/scan")
 	public void scanDomain(@RequestBody DomainVO domainVO){
-
+		domainService.crawle(domainVO);
 	}
 
 	@GetMapping("/{id}")

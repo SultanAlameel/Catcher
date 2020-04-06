@@ -1,16 +1,17 @@
 package com.ksu.catcher.zap;
 
-import org.zaproxy.clientapi.core.ApiResponseElement;
-import org.zaproxy.clientapi.core.ClientApi;
+import com.ksu.catcher.service.DomainService;
 import org.zaproxy.clientapi.core.ClientApiException;
 
 public class CrawlingStatusThread implements Runnable {
-	private String scanID;
+	private String crawlingId;
 	private ZapClient zapClient;
+	private DomainService domainService ;
 
-	public CrawlingStatusThread(String scanID, ZapClient zapClient) {
-		this.scanID = scanID;
+	public CrawlingStatusThread(String scanID, ZapClient zapClient, DomainService domainService) {
+		this.crawlingId = scanID;
 		this.zapClient = zapClient ;
+		this.domainService = domainService ;
 	}
 	
 	@Override
@@ -20,7 +21,7 @@ public class CrawlingStatusThread implements Runnable {
 		while (progress < 100) {
 			try{
 				Thread.sleep(10000);
-				progress = zapClient.checkCrawler(scanID);
+				progress = zapClient.checkCrawler(crawlingId);
 			}catch (ClientApiException e){
 
 			}catch(InterruptedException e){
@@ -29,7 +30,7 @@ public class CrawlingStatusThread implements Runnable {
 		}
 
 		if(progress == 100){
-			//start scan
+			domainService.scan(crawlingId);
 		}
 	}
 

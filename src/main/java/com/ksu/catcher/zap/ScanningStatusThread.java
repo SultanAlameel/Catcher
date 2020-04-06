@@ -1,5 +1,6 @@
 package com.ksu.catcher.zap;
 
+
 import com.ksu.catcher.service.DomainService;
 import org.zaproxy.clientapi.core.ApiResponseElement;
 import org.zaproxy.clientapi.core.ClientApi;

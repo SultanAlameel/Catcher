@@ -53,7 +53,7 @@ public class DomainServiceImpl implements DomainService {
         report.setCrawlId(crawlingId);
         reportRepository.save(report);
 
-        CrawlingStatusThread crawlingStatusThread = new CrawlingStatusThread(crawlingId, zapClient) ;
+        CrawlingStatusThread crawlingStatusThread = new CrawlingStatusThread(crawlingId, zapClient, this) ;
         crawlingStatusThread.run();
     }
 
